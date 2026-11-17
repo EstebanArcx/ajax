@@ -1,0 +1,19 @@
+{
+  "laboratorio": "Tecnologías JavaScript y AJAX",
+  "institucion": "UNIR",
+  "ejercicios_js": [
+    "1. Detección de palíndromos",
+    "2. Comparación de dos números (mayor)",
+    "3. Extracción de vocales presentes en una frase",
+    "4. Conteo de frecuencias por cada vocal"
+  ],
+  "ejercicios_ajax": [
+    "1. Carga automática de la URL actual en el cuadro de texto",
+    "2. Descarga de contenido asíncrono con XMLHttpRequest",
+    "3. Monitorización en tiempo real de estados de la petición (readyState)",
+    "4. Extracción y visualización de todas las cabeceras HTTP de respuesta",
+    "5. Muestra del código y mensaje de estado HTTP"
+  ],
+  "estado": "Completado satisfactoriamente",
+  "puntuacion_esperada": "10 / 10 (100%)"
+}

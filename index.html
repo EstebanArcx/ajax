@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Laboratorio: Tecnologías JavaScript y AJAX | UNIR</title>
+    <!-- Hoja de estilos -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Encabezado Principal -->
+    <header class="app-header">
+        <div class="header-title">
+            <h1>Laboratorio: Tecnologías JavaScript y AJAX</h1>
+            <p>Universidad Internacional de La Rioja (UNIR) — Grado en Ingeniería Informática</p>
+        </div>
+    </header>
+
+    <!-- Barra de Navegación por Pestañas -->
+    <nav class="tabs-nav" role="tablist">
+        <button class="tab-btn active" onclick="cambiarPestana('tab-ajax', this)" role="tab" id="btn-tab-ajax">
+            🌐 Laboratorio AJAX
+        </button>
+        <button class="tab-btn" onclick="cambiarPestana('tab-js', this)" role="tab" id="btn-tab-js">
+            ⚡ Ejercicios JavaScript
+        </button>
+    </nav>
+
+    <!-- ==================================================================== -->
+    <!-- PESTAÑA 1: LABORATORIO AJAX                                           -->
+    <!-- Mantiene íntegramente la estructura y elementos solicitados          -->
+    <!-- ==================================================================== -->
+    <section id="tab-ajax" class="tab-content active" role="tabpanel">
+        
+        <div class="ajax-layout">
+            
+            <!-- Panel Principal (float: left en maqueta clásica) -->
+            <div id="principal">
+                
+                <!-- Zona: Contenidos del archivo -->
+                <div class="card-section">
+                    <h2>
+                        <span>Contenidos del archivo</span>
+                    </h2>
+                    <div id="contenidos" title="Zona donde se vuelca responseText">(El contenido descargado de la URL aparecerá aquí)</div>
+                </div>
+
+                <!-- Zona: Cabeceras HTTP de la respuesta -->
+                <div class="card-section">
+                    <h2>
+                        <span>Cabeceras HTTP de la respuesta del servidor</span>
+                    </h2>
+                    <div id="cabeceras" title="Cabeceras devueltas por getAllResponseHeaders()">(Las cabeceras HTTP de la respuesta se listarán aquí)</div>
+                </div>
+
+                <!-- Zona: Código de estado -->
+                <div class="card-section">
+                    <h2>
+                        <span>Código de estado</span>
+                    </h2>
+                    <div id="codigo" title="Código numérico y mensaje de estado HTTP">Esperando petición...</div>
+                </div>
+
+            </div>
+
+            <!-- Panel Secundario (float: right en maqueta clásica) -->
+            <div id="secundario">
+                
+                <!-- Control de URL y Botón Enviar -->
+                <div class="card-section">
+                    <h2>
+                        <span>URL del recurso:</span>
+                    </h2>
+                    
+                    <div class="url-control-box">
+                        <label for="recurso" style="font-size:0.85rem; color:#475569;">
+                            URL por defecto de la propia página (window.location.href):
+                        </label>
+                        <!-- Cuadro de texto para la URL -->
+                        <input type="text" id="recurso" name="recurso" placeholder="Introduce la URL del recurso..." />
+                        
+                        <!-- Botón Mostrar Contenidos -->
+                        <button type="button" id="enviar">
+                            Mostrar Contenidos
+                        </button>
+                    </div>
+
+                    <!-- Botones de prueba rápida para verificar localmente y por HTTP -->
+                    <div class="quick-tests">
+                        <div class="quick-tests-title">Probar recursos de prueba:</div>
+                        <div class="quick-buttons">
+                            <button class="btn-test" onclick="fijarUrlPrueba(window.location.href)" title="URL de la propia página">
+                                📄 Propia Página
+                            </button>
+                            <button class="btn-test" onclick="fijarUrlPrueba('datos.txt')" title="Archivo de texto plano local">
+                                📝 datos.txt
+                            </button>
+                            <button class="btn-test" onclick="fijarUrlPrueba('datos.json')" title="Archivo JSON local estructurado">
+                                📦 datos.json
+                            </button>
+                            <button class="btn-test" onclick="fijarUrlPrueba('https://jsonplaceholder.typicode.com/todos/1')" title="API pública externa con CORS habilitado">
+                                🌍 API Externa (CORS)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zona: Estados de la petición -->
+                <div class="card-section">
+                    <h2>
+                        <span>Estados de la petición</span>
+                    </h2>
+                    <div id="estados" title="Seguimiento paso a paso del ciclo de vida readyState (0 a 4)">Sin peticiones activas. Haz clic en "Mostrar Contenidos".</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==================================================================== -->
+    <!-- PESTAÑA 2: EJERCICIOS JAVASCRIPT                                     -->
+    <!-- ==================================================================== -->
+    <section id="tab-js" class="tab-content" role="tabpanel">
+        
+        <div class="js-grid">
+            
+            <!-- EJERCICIO JS 1: PALÍNDROMO -->
+            <div class="exercise-card">
+                <div>
+                    <div class="exercise-header">
+                        <h3>1. Detector de Palíndromos</h3>
+                        <p class="desc">
+                            Detecta si una palabra o frase es un palíndromo (se lee igual de izquierda a derecha), ignorando mayúsculas, minúsculas, espacios, tildes y signos de puntuación.
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="js1-input">Cadena de entrada:</label>
+                        <input type="text" id="js1-input" class="form-input" value="Anita lava la tina" placeholder="Ej: Dábale arroz a la zorra el abad" />
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn-primary" onclick="ejecutarEjercicio1()">
+                            Comprobar Palíndromo
+                        </button>
+                        <button class="btn-outline" onclick="ejecutarEjercicio1Prompt()">
+                            Usar prompt()
+                        </button>
+                    </div>
+
+                    <!-- Ejemplos rápidos -->
+                    <div class="quick-tests" style="margin-top:0;">
+                        <span class="quick-tests-title">Ejemplos para probar: </span>
+                        <button class="btn-test" onclick="cargarEjemploJS1('Anita lava la tina')">Anita lava la tina</button>
+                        <button class="btn-test" onclick="cargarEjemploJS1('Dábale arroz a la zorra el abad')">Dábale arroz...</button>
+                        <button class="btn-test" onclick="cargarEjemploJS1('reconocer')">reconocer</button>
+                        <button class="btn-test" onclick="cargarEjemploJS1('Hola mundo')">Hola mundo (No)</button>
+                    </div>
+                </div>
+
+                <div id="js1-resultado"></div>
+            </div>
+
+            <!-- EJERCICIO JS 2: NÚMERO MAYOR ENTRE DOS -->
+            <div class="exercise-card">
+                <div>
+                    <div class="exercise-header">
+                        <h3>2. Mayor de Dos Números</h3>
+                        <p class="desc">
+                            Programa que pide dos números y escribe en la pantalla cuál de ellos es el mayor, o si ambos son idénticos.
+                        </p>
+                    </div>
+
+                    <div class="inputs-row">
+                        <div class="form-group">
+                            <label for="js2-num1">Primer número:</label>
+                            <input type="number" step="any" id="js2-num1" class="form-input" value="45" placeholder="Número 1" />
+                        </div>
+                        <div class="form-group">
+                            <label for="js2-num2">Segundo número:</label>
+                            <input type="number" step="any" id="js2-num2" class="form-input" value="18" placeholder="Número 2" />
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn-primary" onclick="ejecutarEjercicio2()">
+                            Comparar Números
+                        </button>
+                        <button class="btn-outline" onclick="ejecutarEjercicio2Prompt()">
+                            Pedir con prompt()
+                        </button>
+                    </div>
+
+                    <!-- Ejemplos rápidos -->
+                    <div class="quick-tests" style="margin-top:0;">
+                        <span class="quick-tests-title">Ejemplos: </span>
+                        <button class="btn-test" onclick="cargarEjemploJS2(45, 18)">45 vs 18</button>
+                        <button class="btn-test" onclick="cargarEjemploJS2(12.5, 99.8)">12.5 vs 99.8</button>
+                        <button class="btn-test" onclick="cargarEjemploJS2(20, 20)">20 vs 20 (Iguales)</button>
+                        <button class="btn-test" onclick="cargarEjemploJS2(-15, -3)">-15 vs -3 (Negativos)</button>
+                    </div>
+                </div>
+
+                <div id="js2-resultado"></div>
+            </div>
+
+            <!-- EJERCICIO JS 3: VOCALES QUE APARECEN -->
+            <div class="exercise-card">
+                <div>
+                    <div class="exercise-header">
+                        <h3>3. Vocales que Aparecen en una Frase</h3>
+                        <p class="desc">
+                            Escribe las distintas vocales que están presentes en la frase (sin duplicados, considerando tildes y diéresis).
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="js3-frase">Frase a analizar:</label>
+                        <input type="text" id="js3-frase" class="form-input" value="La programación con JavaScript es apasionante" placeholder="Escribe una frase..." />
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn-primary" onclick="ejecutarEjercicio3()">
+                            Extraer Vocales
+                        </button>
+                        <button class="btn-outline" onclick="ejecutarEjercicio3Prompt()">
+                            Usar prompt()
+                        </button>
+                    </div>
+
+                    <!-- Ejemplos rápidos -->
+                    <div class="quick-tests" style="margin-top:0;">
+                        <span class="quick-tests-title">Ejemplos: </span>
+                        <button class="btn-test" onclick="cargarEjemploJS3('Murciélago')">Murciélago (Todas)</button>
+                        <button class="btn-test" onclick="cargarEjemploJS3('¡Hola Mundo!')">¡Hola Mundo!</button>
+                        <button class="btn-test" onclick="cargarEjemploJS3('Lynx sync rhythms')">Sin vocales</button>
+                    </div>
+                </div>
+
+                <div id="js3-resultado"></div>
+            </div>
+
+            <!-- EJERCICIO JS 4: CONTEO DE FRECUENCIA DE VOCALES -->
+            <div class="exercise-card">
+                <div>
+                    <div class="exercise-header">
+                        <h3>4. Conteo de Frecuencia de Vocales</h3>
+                        <p class="desc">
+                            Cuenta de forma individualizada cuántas veces se repite cada una de las vocales (A, E, I, O, U) en el texto suministrado.
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="js4-frase">Frase a contar:</label>
+                        <input type="text" id="js4-frase" class="form-input" value="El murciélago comía higos y uvas en el árbol" placeholder="Escribe una frase..." />
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn-primary" onclick="ejecutarEjercicio4()">
+                            Contar Frecuencia
+                        </button>
+                        <button class="btn-outline" onclick="ejecutarEjercicio4Prompt()">
+                            Usar prompt()
+                        </button>
+                    </div>
+
+                    <!-- Ejemplos rápidos -->
+                    <div class="quick-tests" style="margin-top:0;">
+                        <span class="quick-tests-title">Ejemplos: </span>
+                        <button class="btn-test" onclick="cargarEjemploJS4('El murciélago comía higos y uvas en el árbol')">Frase con tildes</button>
+                        <button class="btn-test" onclick="cargarEjemploJS4('Universidad Internacional de La Rioja')">Nombre UNIR</button>
+                        <button class="btn-test" onclick="cargarEjemploJS4('AEIOU aeiou áéíóú')">Puras vocales</button>
+                    </div>
+                </div>
+
+                <div id="js4-resultado"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        Laboratorio de Tecnologías JavaScript y AJAX — UNIR © 2026.
+    </footer>
+
+</div>
+
+<!-- Scripts de la Aplicación -->
+<script src="js/javascript-exercises.js"></script>
+<script src="js/ajax-lab.js"></script>
+
+<script>
+// Función para alternar entre pestañas de navegación
+function cambiarPestana(idTab, boton) {
+    // Desactivar todos los contenidos y botones
+    document.querySelectorAll('.tab-content').forEach(function(tab) {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+
+    // Activar el seleccionado
+    var target = document.getElementById(idTab);
+    if (target) {
+        target.classList.add('active');
+    }
+    if (boton) {
+        boton.classList.add('active');
+    }
+}
+
+// Ejecutar automáticamente los ejercicios JS al cargar para poblar la vista inicial
+window.addEventListener('DOMContentLoaded', function() {
+    if (typeof ejecutarEjercicio1 === 'function') ejecutarEjercicio1();
+    if (typeof ejecutarEjercicio2 === 'function') ejecutarEjercicio2();
+    if (typeof ejecutarEjercicio3 === 'function') ejecutarEjercicio3();
+    if (typeof ejecutarEjercicio4 === 'function') ejecutarEjercicio4();
+});
+</script>
+
+</body>
+</html>

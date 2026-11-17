@@ -1,0 +1,12 @@
+Laboratorio de Tecnologías JavaScript y AJAX
+Universidad Internacional de La Rioja (UNIR)
+Asignatura: Aplicaciones de Red / Tecnologías Web
+
+Este archivo 'datos.txt' es un recurso de prueba servido localmente para verificar el correcto funcionamiento del objeto XMLHttpRequest y el protocolo HTTP.
+
+Características demostradas:
+- Solicitud HTTP GET asíncrona mediante AJAX.
+- Seguimiento de estados readyState (0 a 4).
+- Recepción e inspección de cabeceras HTTP.
+- Código de respuesta del servidor (200 OK).
+- Volcado del cuerpo de respuesta (responseText) en el panel de contenidos.

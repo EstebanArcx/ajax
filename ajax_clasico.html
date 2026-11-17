@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Laboratorio AJAX - Estados de la petición AJAX</title>
+
+<style type="text/css">
+body {
+    font: 13px Arial, Helvetica, sans-serif;
+    color: #333;
+    margin: 20px;
+}
+h1 {
+    font-size: 1.5em;
+    color: #1a365d;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #cbd5e1;
+    padding-bottom: 8px;
+}
+h2 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 1.15em;
+    color: #2b6cb0;
+}
+#recurso, #enviar {
+    padding: .4em;
+    font-size: 1.1em;
+}
+#recurso {
+    width: 95%;
+    box-sizing: border-box;
+}
+#enviar {
+    margin-top: 8px;
+    cursor: pointer;
+    background-color: #2b6cb0;
+    color: #fff;
+    border: 1px solid #2b6cb0;
+    border-radius: 4px;
+}
+#enviar:hover {
+    background-color: #2c5282;
+}
+#principal {
+    float: left;
+    width: 68%;
+}
+#secundario {
+    float: right;
+    width: 29%;
+}
+#contenidos, #estados, #cabeceras, #codigo {
+    border: 2px solid #CCC;
+    background: #FAFAFA;
+    padding: 10px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 12px;
+    border-radius: 4px;
+}
+#contenidos {
+    min-height: 380px;
+    max-height: 550px;
+    overflow-y: scroll;
+    background: #FFF;
+}
+#estados {
+    min-height: 220px;
+    max-height: 350px;
+    overflow-y: auto;
+    background: #f7fafc;
+}
+#cabeceras {
+    min-height: 160px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+#codigo {
+    min-height: 35px;
+    font-weight: bold;
+}
+.limpiador {
+    clear: both;
+}
+.volver {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 6px 12px;
+    background: #edf2f7;
+    color: #2b6cb0;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+</style>
+
+<script type="text/javascript">
+// Constantes para los 5 estados de la petición XHR (readyState)
+var READY_STATE_UNINITIALIZED = 0; // No iniciada (UNSENT)
+var READY_STATE_LOADING       = 1; // Cargando (OPENED)
+var READY_STATE_LOADED        = 2; // Cabeceras recibidas (HEADERS_RECEIVED)
+var READY_STATE_INTERACTIVE   = 3; // Interactiva (LOADING)
+var READY_STATE_COMPLETE      = 4; // Completada (DONE)
+
+var peticion_http = null;
+
+/**
+ * Inicializa el objeto XMLHttpRequest de forma compatible con navegadores estándar y antiguos
+ */
+function inicializa_xhr() {
+    if (window.XMLHttpRequest) {
+        return new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        return new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return null;
+}
+
+/**
+ * Criterio 6 (Ejercicio AJAX 2): Descarga mediante peticiones AJAX el contenido de la URL
+ */
+function descargaArchivo() {
+    var recurso = document.getElementById('recurso').value;
+
+    // Limpiar zonas de salida
+    document.getElementById('estados').innerHTML = "";
+    document.getElementById('codigo').innerHTML = "";
+    document.getElementById('cabeceras').innerHTML = "";
+    document.getElementById('contenidos').innerHTML = "Descargando recurso...";
+
+    peticion_http = inicializa_xhr();
+
+    if (peticion_http) {
+        // Criterio 7: Mostrar estado inicial [0]
+        document.getElementById('estados').innerHTML = "[0] No iniciada (UNSENT): Objeto creado<br/>";
+
+        // Criterio 7 (Ejercicio AJAX 3): Asignar manejador de evento para registrar los estados
+        peticion_http.onreadystatechange = muestraEstado;
+
+        peticion_http.onerror = function() {
+            document.getElementById('estados').innerHTML += "<br/><strong>[ERROR] Error en la petición (Posible restricción CORS o protocolo file://).</strong><br/>";
+            document.getElementById('codigo').innerHTML = "0 Error de Red";
+            document.getElementById('contenidos').innerHTML = "No se pudo cargar el recurso. Si usas 'file://', ejecuta un servidor local como 'python serve.py'.";
+        };
+
+        peticion_http.open('GET', recurso, true);
+        peticion_http.send(null);
+    }
+}
+
+/**
+ * Criterio 7 (Ejercicio AJAX 3): Muestra en todo momento el estado de la petición en #estados
+ * Criterios 6, 8 y 9: Muestra contenidos, cabeceras y código de estado al completarse
+ */
+function muestraEstado() {
+    var estadosObj = document.getElementById('estados');
+
+    // Criterio 7: Seguimiento de estados de la petición
+    switch (peticion_http.readyState) {
+        case READY_STATE_UNINITIALIZED:
+            estadosObj.innerHTML += "[0] No iniciada: Objeto no inicializado<br/>";
+            break;
+        case READY_STATE_LOADING:
+            estadosObj.innerHTML += "[1] Cargando: Objeto inicializado y conexión abierta<br/>";
+            break;
+        case READY_STATE_LOADED:
+            estadosObj.innerHTML += "[2] Cabeceras recibidas: Petición enviada y cabeceras recibidas<br/>";
+            break;
+        case READY_STATE_INTERACTIVE:
+            estadosObj.innerHTML += "[3] Interactiva: Descargando cuerpo de la respuesta<br/>";
+            break;
+        case READY_STATE_COMPLETE:
+            estadosObj.innerHTML += "[4] Completada: Transferencia finalizada con éxito<br/>";
+
+            // Criterio 9 (Ejercicio AJAX 5): Mostrar código y texto de la respuesta del servidor
+            var codigoObj = document.getElementById('codigo');
+            codigoObj.innerHTML = peticion_http.status + " " + peticion_http.statusText;
+
+            // Criterio 8 (Ejercicio AJAX 4): Mostrar todas las cabeceras de la respuesta
+            var cabecerasObj = document.getElementById('cabeceras');
+            cabecerasObj.textContent = peticion_http.getAllResponseHeaders() || "(Sin cabeceras disponibles)";
+
+            // Criterio 6 (Ejercicio AJAX 2): Mostrar contenidos del archivo
+            var contenidosObj = document.getElementById('contenidos');
+            contenidosObj.textContent = peticion_http.responseText;
+            break;
+    }
+}
+
+/**
+ * Criterio 5 (Ejercicio AJAX 1): Al cargar la página, el cuadro de texto
+ * debe mostrar por defecto la URL de la propia página.
+ */
+window.onload = function() {
+    // Criterio 5: Cargar URL de la propia página en el input #recurso
+    var recursoInput = document.getElementById('recurso');
+    if (recursoInput) {
+        recursoInput.value = window.location.href;
+    }
+
+    // Criterio 6: Asignar evento click al botón #enviar ("Mostrar Contenidos")
+    var btnEnviar = document.getElementById('enviar');
+    if (btnEnviar) {
+        btnEnviar.onclick = function() {
+            descargaArchivo();
+        };
+    }
+};
+</script>
+
+</head>
+<body>
+
+    <h1>Laboratorio: Estados de la petición AJAX</h1>
+
+    <!-- Zona Principal: Contenidos, Cabeceras y Código de estado -->
+    <div id="principal">
+        <h2>Contenidos del archivo</h2>
+        <div id="contenidos">(El contenido aparecerá aquí tras pulsar el botón)</div>
+
+        <h2>Cabeceras HTTP de la respuesta del servidor</h2>
+        <div id="cabeceras">(Las cabeceras aparecerán aquí)</div>
+
+        <h2>Código de estado</h2>
+        <div id="codigo">Esperando petición...</div>
+    </div>
+
+    <!-- Zona Secundaria: URL, Botón y Estados -->
+    <div id="secundario">
+        <h2>URL del recurso:</h2>
+        <p>
+            <input type="text" id="recurso" value="" />
+            <br />
+            <input type="button" id="enviar" value="Mostrar Contenidos" />
+        </p>
+
+        <h2>Estados de la petición</h2>
+        <div id="estados">No iniciada. Pulsa en "Mostrar Contenidos".</div>
+    </div>
+
+    <div class="limpiador"></div>
+
+    <hr style="margin-top:30px; border:0; border-top:1px solid #cbd5e1;" />
+    <p>
+        <a href="index.html" class="volver">&larr; Ir a la Aplicación Integrada (con Ejercicios JS y Documentación)</a>
+    </p>
+
+</body>
+</html>

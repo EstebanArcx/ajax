@@ -1,0 +1,9 @@
+# Exclusiones solicitadas
+*.docx
+DOCUMENTACION.md
+
+# Archivos de sistema / temporales
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
